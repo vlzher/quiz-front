@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Navbar from "../components/Navbar.jsx";
 import { getAllPolls, TOKEN_CONST } from "../api/api.js";
 import { useNavigate } from "react-router-dom";
@@ -46,6 +45,11 @@ const PollsPage = () => {
           pollId={poll.pollID}
         />
       ))}
+
+        <PollLink
+            pollName={123}
+            pollId={1}
+        />
     </div>
   );
 };

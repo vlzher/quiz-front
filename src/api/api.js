@@ -3,42 +3,6 @@ import axios from "axios";
 const baseURL = "http://localhost:8080";
 export const TOKEN_CONST = "token";
 
-export const login = async (login, password) => {
-  try {
-    const response = await axios.post(`${baseURL}/api/auth/login`, {
-      login,
-      password,
-    });
-    if (response.status === 200) {
-      localStorage.setItem(TOKEN_CONST, response.data);
-      return { success: true, error: null };
-    } else if (response.status === 401) {
-      return { success: false, error: "Invalid username or password" };
-    } else {
-      return { success: false, error: "Login failed" };
-    }
-  } catch (error) {
-    return { success: false, error: "Login failed" };
-  }
-};
-
-export const register = async (login, password) => {
-  try {
-    const response = await axios.post(`${baseURL}/api/auth/register`, {
-      login,
-      password,
-    });
-    if (response.status === 200) {
-      return { success: true, error: null };
-    } else if (response.status === 409) {
-      return { success: false, error: "Username already exists" };
-    } else {
-      return { success: false, error: "Registration failed" };
-    }
-  } catch (error) {
-    return { success: false, error: "Registration failed" };
-  }
-};
 
 export const getAllPolls = async () => {
   try {
