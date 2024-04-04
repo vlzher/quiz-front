@@ -1,59 +1,113 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { Line } from 'react-lines';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const MatchQuestion = () => {
-    const [terms, setTerms] = useState([
-        { id: 'term1', content: 'Term 1' },
-        { id: 'term2', content: 'Term 2' },
-        { id: 'term3', content: 'Term 3' },
+    const [leftColumn, setLeftColumn] = useState([
+        { id: '1', content: 'Item 1', connectedTo: null },
+        { id: '2', content: 'Item 2', connectedTo: null },
+        // Add more items as needed
     ]);
 
-    const [definitions, setDefinitions] = useState([
-        { id: 'definition1', content: 'Definition 1' },
-        { id: 'definition2', content: 'Definition 2' },
-        { id: 'definition3', content: 'Definition 3' },
-    ]);
+    const [rightColumn, setRightColumn] = useState([]);
 
-    const [matches, setMatches] = useState({});
+    const [lines, setLines] = useState([]);
 
-    const handleDragEnd = (result) => {
-        const { source, destination, draggableId } = result;
+    const onDragEnd = (result) => {
+        if (!result.destination) return;
 
-        if (!destination) return;
+        const sourceIndex = result.source.index;
+        const destinationIndex = result.destination.index;
 
-        if (destination.droppableId === source.droppableId) return;
+        const draggedItem = leftColumn[sourceIndex];
+        const newLeftColumn = [...leftColumn];
+        newLeftColumn.splice(sourceIndex, 1);
 
-        const termId = draggableId;
-        const definitionId = destination.droppableId;
+        const newRightColumn = [...rightColumn, draggedItem];
+        setLeftColumn(newLeftColumn);
+        setRightColumn(newRightColumn);
 
-        setMatches((prevMatches) => ({
-            ...prevMatches,
-            [termId]: definitionId,
-        }));
+        // Update lines
+        updateLines();
+    };
+
+    const updateLines = () => {
+        const newLines = rightColumn.map((item) => {
+            if (item.connectedTo !== null) {
+                const from = document.getElementById(item.id);
+                const to = document.getElementById(item.connectedTo);
+
+                const fromRect = from.getBoundingClientRect();
+                const toRect = to.getBoundingClientRect();
+
+                return {
+                    from: {
+                        x: fromRect.left + fromRect.width / 2,
+                        y: fromRect.top + fromRect.height / 2,
+                    },
+                    to: {
+                        x: toRect.left + toRect.width / 2,
+                        y: toRect.top + toRect.height / 2,
+                    },
+                };
+            } else {
+                return null;
+            }
+        });
+
+        setLines(newLines.filter((line) => line !== null));
     };
 
     return (
-        <div className="flex justify-center mt-8">
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="terms">
+        <div className="flex justify-center">
+            <div className="w-1/2">
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId="left-column">
+                        {(provided) => (
+                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                {leftColumn.map((item, index) => (
+                                    <Draggable
+                                        key={item.id}
+                                        draggableId={item.id}
+                                        index={index}
+                                    >
+                                        {(provided) => (
+                                            <div
+                                                id={item.id}
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className="p-4 mb-2 bg-gray-200 rounded-md cursor-pointer"
+                                            >
+                                                {item.content}
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            </div>
+            <div className="w-1/2">
+                <Droppable droppableId="right-column">
                     {(provided) => (
                         <div
-                            className="flex flex-col items-center w-1/2"
                             ref={provided.innerRef}
                             {...provided.droppableProps}
+                            className="h-full"
                         >
-                            <h2 className="mb-4">Terms</h2>
-                            {terms.map((term, index) => (
-                                <Draggable key={term.id} draggableId={term.id} index={index}>
+                            {rightColumn.map((item, index) => (
+                                <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(provided) => (
                                         <div
-                                            className="bg-gray-200 p-2 mb-2 rounded cursor-pointer"
+                                            id={item.id}
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
+                                            className="p-4 mb-2 bg-gray-200 rounded-md cursor-pointer"
                                         >
-                                            {term.content}
+                                            {item.content}
                                         </div>
                                     )}
                                 </Draggable>
@@ -62,52 +116,21 @@ const MatchQuestion = () => {
                         </div>
                     )}
                 </Droppable>
-                <div className="flex justify-center items-center w-1/2">
-                    <svg className="w-16">
-                        {Object.keys(matches).map((termId) => {
-                            const definitionId = matches[termId];
-                            const termIndex = terms.findIndex((term) => term.id === termId);
-                            const definitionIndex = definitions.findIndex(
-                                (definition) => definition.id === definitionId
-                            );
-                            const termPosition = termIndex * 50 + 25;
-                            const definitionPosition = definitionIndex * 50 + 25;
-                            return (
-                                <Line
-                                    key={`${termId}-${definitionId}`}
-                                    x0={0}
-                                    y0={termPosition}
-                                    x1={100}
-                                    y1={definitionPosition}
-                                    strokeWidth={2}
-                                    strokeColor="#000"
-                                />
-                            );
-                        })}
+            </div>
+            <div className="w-1/2 relative">
+                {lines.map((line, index) => (
+                    <svg key={index} className="absolute" style={{ zIndex: -1 }}>
+                        <line
+                            x1={line.from.x}
+                            y1={line.from.y}
+                            x2={line.to.x}
+                            y2={line.to.y}
+                            stroke="black"
+                            strokeWidth="2"
+                        />
                     </svg>
-                </div>
-                <Droppable droppableId="definitions">
-                    {(provided) => (
-                        <div
-                            className="flex flex-col items-center w-1/2"
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                        >
-                            <h2 className="mb-4">Definitions</h2>
-                            {definitions.map((definition, index) => (
-                                <div
-                                    key={definition.id}
-                                    className="bg-gray-200 p-2 mb-2 rounded"
-                                    data-id={definition.id}
-                                >
-                                    {definition.content}
-                                </div>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+                ))}
+            </div>
         </div>
     );
 };

@@ -11,6 +11,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { makeQuestion } from "../utils/makeQuestion.js";
 import MatchQuestion from "../components/Questions/MatchQuestion.jsx";
 import OrderQuestion from "../components/Questions/OrderQuestion.jsx";
+import OneAnswerQuestion from "../components/Questions/OneAnswerQuestion.jsx";
+import MultipleAnswerQuestion from "../components/Questions/MutipleAnswerQuestion.jsx";
 
 const PollPage = () => {
   const navigate = useNavigate();
@@ -99,7 +101,19 @@ const PollPage = () => {
           "Option C",
           "Option D",
         ]}/>
-        <MatchQuestion terms={terms} definitions={definitions} />
+        <OneAnswerQuestion question={"What is your favorite color?"} options={[
+          "Option A",
+          "Option B",
+          "Option C",
+          "Option D",
+        ]}/>
+        <MultipleAnswerQuestion question={"What is your favorite color?"} options={[
+          "Option A",
+          "Option B",
+          "Option C",
+          "Option D",
+        ]}/>
+
       </div>
 
       {/*{error && <div>{error}</div>}*/}

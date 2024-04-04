@@ -30,10 +30,10 @@ const OrderQuestion = ({ question, options }) => {
                                             {...provided.dragHandleProps}
                                             className="flex items-center space-x-2 bg-gray-100 rounded-md my-2 cursor-move"
                                         >
-                                            <div className="flex items-center justify-center w-7 h-7 m-1 rounded-full bg-gray-700">
+                                            <div className="select-none flex items-center justify-center w-7 h-7 m-1 rounded-full bg-gray-700">
                                                 {index + 1}
                                             </div>
-                                            <span className="text-black">{option}</span>
+                                            <span className="select-none text-black">{option}</span>
                                         </div>
                                     )}
                                 </Draggable>
