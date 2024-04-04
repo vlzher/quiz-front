@@ -13,6 +13,7 @@ import MatchQuestion from "../components/Questions/MatchQuestion.jsx";
 import OrderQuestion from "../components/Questions/OrderQuestion.jsx";
 import OneAnswerQuestion from "../components/Questions/OneAnswerQuestion.jsx";
 import MultipleAnswerQuestion from "../components/Questions/MutipleAnswerQuestion.jsx";
+import FileQuestion from "../components/Questions/FileQuestion.jsx";
 
 const PollPage = () => {
   const navigate = useNavigate();
@@ -113,10 +114,14 @@ const PollPage = () => {
           "Option C",
           "Option D",
         ]}/>
+        <FileQuestion question={"What is your favorite color?"}/>
+        <MatchQuestion question={"What is your favorite color?"} optionsLeft={["Option A",
+          "Option B"]} optionsRight={[
+          "Option C",
+          "Option D",
+        ]}/>
 
       </div>
-
-      {/*{error && <div>{error}</div>}*/}
     </div>
   );
 };
