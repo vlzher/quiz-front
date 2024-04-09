@@ -22,7 +22,7 @@ const OneAnswerQuestion = ({ question, options }) => {
                         <div className={"w-full flex justify-between"}>
                             <label className="select-none text-black">{option}</label>
                             <input
-                                className={"mx-2 bg-green-200"}
+                                className={"mx-2 checked:accent-gray-700"}
                                 type="radio"
                                 name={`option-${index}`}
                                 value={index + 1}
