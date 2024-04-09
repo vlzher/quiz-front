@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import Xarrow from 'react-xarrows';
 
 const MatchQuestion = ({ question, optionsLeft, optionsRight }) => {
@@ -11,21 +11,18 @@ const MatchQuestion = ({ question, optionsLeft, optionsRight }) => {
     const handleDrop = (event, rightID) => {
         const leftID = event.dataTransfer.getData('leftID');
         if(!leftID) return
-        console.log(leftID,rightID)
         let newConnections = [...connections];
-        console.log("conenctions before", newConnections)
         newConnections = newConnections.filter((el) => el.from !== leftID && el.to !== rightID);
-        console.log("connections after", newConnections)
         newConnections.push({ from: leftID, to: rightID })
         setConnections(newConnections);
     };
 
     return (
-        <div className="flex flex-col w-1/3 justify-center">
+        <div className="flex flex-col w-2/3 justify-center">
             <h2 className="text-lg font-semibold mb-2">{question}</h2>
             <div className="flex w-full justify-between">
                 <div
-                    className="w-1/2 p-2 border border-gray-300 rounded-lg mr-4"
+                    className="w-1/3 p-2 border border-gray-300 rounded-lg mr-4"
                 >
                     {optionsLeft.map((option, index) => (
                         <div
@@ -42,8 +39,6 @@ const MatchQuestion = ({ question, optionsLeft, optionsRight }) => {
                         </div>
                     ))}
                 </div>
-
-                {/* Right column */}
                 <div
                     className="w-1/2 p-2 border border-gray-300 rounded-lg ml-4"
                 >
