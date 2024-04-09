@@ -1,13 +1,13 @@
 import { Button, Modal } from "flowbite-react";
 
-export default function DeleteModal({ props, setToDelete, value }) {
+export default function DeleteModal({ openModal,setOpenModal, setToDelete, value }) {
   return (
     <>
       <Modal
-        show={props.openModal === "pop-up"}
+        show={openModal === "pop-up"}
         size="md"
         popup
-        onClose={() => props.setOpenModal(undefined)}
+        onClose={() => setOpenModal(undefined)}
       >
         <Modal.Header />
         <Modal.Body>
@@ -19,7 +19,7 @@ export default function DeleteModal({ props, setToDelete, value }) {
               <Button
                 color="failure"
                 onClick={() => {
-                  props.setOpenModal(undefined);
+                  setOpenModal(undefined);
                   setToDelete(value);
                 }}
               >
@@ -28,7 +28,7 @@ export default function DeleteModal({ props, setToDelete, value }) {
               <Button
                 color="gray"
                 onClick={() => {
-                  props.setOpenModal(undefined);
+                  setOpenModal(undefined);
                 }}
               >
                 No, cancel

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MultipleAnswerQuestion = ({ question, options }) => {
+const MultipleAnswerQuestion = ({width, question, options }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     const handleOptionChange = (index) => {
@@ -17,7 +17,7 @@ const MultipleAnswerQuestion = ({ question, options }) => {
     };
 
     return (
-        <div className="w-1/3 p-4 border border-gray-300 rounded-lg">
+        <div className={`w-${width} p-4 border border-gray-300 rounded-lg`}>
             <h2 className="text-lg font-semibold mb-2">{question}</h2>
             <div className="flex flex-col h-52">
                 {options.map((option, index) => (

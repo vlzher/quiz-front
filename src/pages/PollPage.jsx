@@ -14,6 +14,8 @@ import OrderQuestion from "../components/Questions/OrderQuestion.jsx";
 import OneAnswerQuestion from "../components/Questions/OneAnswerQuestion.jsx";
 import MultipleAnswerQuestion from "../components/Questions/MutipleAnswerQuestion.jsx";
 import FileQuestion from "../components/Questions/FileQuestion.jsx";
+import ModalQuestion from "../components/ModalQuestion.jsx";
+import AddQuestionModal from "../components/Modal/AddQuestionModal/AddQuestionModal.jsx";
 
 const PollPage = () => {
   const navigate = useNavigate();
@@ -96,30 +98,31 @@ const PollPage = () => {
 
       </div>
       <div className="flex flex-col items-center w-full">
-        <OrderQuestion question={"What is your favorite color?"} options={[
+        <OrderQuestion width={"1/3"} question={"What is your favorite color?"} options={[
           "Option A",
           "Option B",
           "Option C",
           "Option D",
         ]}/>
-        <OneAnswerQuestion question={"What is your favorite color?"} options={[
+        <OneAnswerQuestion width={"1/3"} question={"What is your favorite color?"} options={[
           "Option A",
           "Option B",
           "Option C",
           "Option D",
         ]}/>
-        <MultipleAnswerQuestion question={"What is your favorite color?"} options={[
+        <MultipleAnswerQuestion width={"1/3"} question={"What is your favorite color?"} options={[
           "Option A",
           "Option B",
           "Option C",
           "Option D",
         ]}/>
-        <FileQuestion question={"What is your favorite color?"}/>
-        <MatchQuestion question={"What is your favorite color?"} optionsLeft={["Option A",
+        <FileQuestion width={"1/3"} question={"What is your favorite color?"}/>
+        <MatchQuestion width={"2/3"} question={"What is your favorite color?"} optionsLeft={["Option A",
           "Option B"]} optionsRight={[
           "Option C",
           "Option D",
         ]}/>
+        <AddQuestionModal openModal={true} setOpenModal={setOpenModal}/>
 
       </div>
     </div>

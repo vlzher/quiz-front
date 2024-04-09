@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-const OrderQuestion = ({ question, options }) => {
+const OrderQuestion = ({width, question, options }) => {
     const [orderedOptions, setOrderedOptions] = useState(options);
 
     const handleDragEnd = (result) => {
@@ -15,12 +15,12 @@ const OrderQuestion = ({ question, options }) => {
     };
 
     return (
-        <div className="w-1/3 p-4 border border-gray-300 rounded-lg">
+        <div className={`w-${width} p-4 border border-gray-300 rounded-lg`}>
             <h2 className="text-lg font-semibold mb-2">{question}</h2>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col h-52">
+                        <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col">
                             {orderedOptions.map((option, index) => (
                                 <Draggable key={option} draggableId={option} index={index}>
                                     {(provided) => (

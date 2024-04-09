@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Xarrow from 'react-xarrows';
 
-const MatchQuestion = ({ question, optionsLeft, optionsRight }) => {
+const MatchQuestion = ({width, question, optionsLeft, optionsRight }) => {
     const [connections, setConnections] = useState([]);
 
     const handleDragStart = (event, leftID) => {
@@ -18,7 +18,7 @@ const MatchQuestion = ({ question, optionsLeft, optionsRight }) => {
     };
 
     return (
-        <div className="flex flex-col w-2/3 justify-center">
+        <div className={`w-${width} p-4 border border-gray-300 rounded-lg`}>
             <h2 className="text-lg font-semibold mb-2">{question}</h2>
             <div className="flex w-full justify-between">
                 <div
