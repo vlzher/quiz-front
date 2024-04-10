@@ -9,13 +9,6 @@ import {
 } from "../api/api.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeQuestion } from "../utils/makeQuestion.js";
-import MatchQuestion from "../components/Questions/MatchQuestion.jsx";
-import OrderQuestion from "../components/Questions/OrderQuestion.jsx";
-import OneAnswerQuestion from "../components/Questions/OneAnswerQuestion.jsx";
-import MultipleAnswerQuestion from "../components/Questions/MutipleAnswerQuestion.jsx";
-import FileQuestion from "../components/Questions/FileQuestion.jsx";
-import ModalQuestion from "../components/ModalQuestion.jsx";
-import AddQuestionModal from "../components/Modal/AddQuestionModal/AddQuestionModal.jsx";
 
 const PollPage = () => {
   const navigate = useNavigate();
@@ -98,31 +91,8 @@ const PollPage = () => {
 
       </div>
       <div className="flex flex-col items-center w-full">
-        <OrderQuestion width={"1/3"} question={"What is your favorite color?"} options={[
-          "Option A",
-          "Option B",
-          "Option C",
-          "Option D",
-        ]}/>
-        <OneAnswerQuestion width={"1/3"} question={"What is your favorite color?"} options={[
-          "Option A",
-          "Option B",
-          "Option C",
-          "Option D",
-        ]}/>
-        <MultipleAnswerQuestion width={"1/3"} question={"What is your favorite color?"} options={[
-          "Option A",
-          "Option B",
-          "Option C",
-          "Option D",
-        ]}/>
-        <FileQuestion width={"1/3"} question={"What is your favorite color?"}/>
-        <MatchQuestion width={"2/3"} question={"What is your favorite color?"} optionsLeft={["Option A",
-          "Option B"]} optionsRight={[
-          "Option C",
-          "Option D",
-        ]}/>
-        <AddQuestionModal openModal={true} setOpenModal={setOpenModal}/>
+
+
 
       </div>
     </div>

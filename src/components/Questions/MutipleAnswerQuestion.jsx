@@ -19,7 +19,7 @@ const MultipleAnswerQuestion = ({width, question, options }) => {
     return (
         <div className={`w-${width} p-4 border border-gray-300 rounded-lg`}>
             <h2 className="text-lg font-semibold mb-2">{question}</h2>
-            <div className="flex flex-col h-52">
+            <div className="flex flex-col">
                 {options.map((option, index) => (
                     <div key={option} onClick={() => handleOptionChange(index)} className="flex items-center space-x-2 bg-gray-100 rounded-md my-2">
                         <div

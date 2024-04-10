@@ -19,6 +19,7 @@ const AddQuestionModal = ({openModal, setOpenModal}) => {
     const [isResultModal, setIsResultModal] = useState("");
     const [questionTitle, setQuestionTitle] = useState("");
     const [questionOptions, setQuestionOptions] = useState([]);
+    const [questionOptionsRight, setQuestionOptionsRight] = useState([]);
     return (
         <>
 
@@ -29,9 +30,12 @@ const AddQuestionModal = ({openModal, setOpenModal}) => {
                 {modalType === ModalTypes.Menu &&
                     <AddQuestionModalMenu modalType={modalType} setModalType={setModalType}/>}
                 {modalType !== ModalTypes.Menu && !isResultModal &&
-                    <AddQuestionModalBody questionTitle={questionTitle} setQuestionTitle={setQuestionTitle} questionOptions={questionOptions} setQuestionOptions={setQuestionOptions} setIsResultModal={setIsResultModal} modalType={modalType} setModalType={setModalType}/>}
-                {modalType && isResultModal && <AddQuestionModalResult questionTitle={questionTitle} questionOptions={questionOptions} modalType={modalType} setModalType={setModalType}
-                                                                       isResultModal={isResultModal}
+                    <AddQuestionModalBody questionTitle={questionTitle} questionOptionsRight={questionOptionsRight} setQuestionOptionsRight={setQuestionOptionsRight} setQuestionTitle={setQuestionTitle} questionOptions={questionOptions} setQuestionOptions={setQuestionOptions} setIsResultModal={setIsResultModal} modalType={modalType} setModalType={setModalType}/>}
+                {modalType && isResultModal && <AddQuestionModalResult setQuestionTitle={setQuestionTitle} questionTitle={questionTitle} questionOptions={questionOptions} modalType={modalType} setModalType={setModalType}
+                                                                       setQuestionOptions={setQuestionOptions}
+                                                                       setQuestionOptionsRight={setQuestionOptionsRight}
+
+                                                                       questionOptionsRight={questionOptionsRight}
                                                                        setIsResultModal={setIsResultModal}/>}
             </Modal>
         </>

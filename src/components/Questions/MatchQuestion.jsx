@@ -16,7 +16,7 @@ const MatchQuestion = ({width, question, optionsLeft, optionsRight }) => {
         newConnections.push({ from: leftID, to: rightID })
         setConnections(newConnections);
     };
-
+    console.log(connections)
     return (
         <div className={`w-${width} p-4 border border-gray-300 rounded-lg`}>
             <h2 className="text-lg font-semibold mb-2">{question}</h2>
@@ -26,10 +26,10 @@ const MatchQuestion = ({width, question, optionsLeft, optionsRight }) => {
                 >
                     {optionsLeft.map((option, index) => (
                         <div
-                            key={`left_${index}`}
-                            id={`left_${index}`}
+                            key={`left_${index}_${option}`}
+                            id={`left_${index}_${option}`}
                             draggable
-                            onDragStart={(event) => handleDragStart(event, 'left_'+index)}
+                            onDragStart={(event) => handleDragStart(event, `left_${index}_${option}`)}
                             className="flex items-center space-x-2 bg-gray-100 rounded-md my-2 cursor-move"
                         >
                             <div className="select-none flex items-center justify-center w-7 h-7 m-1 rounded-full bg-gray-700">
@@ -44,10 +44,10 @@ const MatchQuestion = ({width, question, optionsLeft, optionsRight }) => {
                 >
                     {optionsRight.map((option, index) => (
                         <div
-                            key={`right_${index}`}
-                            id={`right_${index}`}
+                            key={`right_${index}_${option}`}
+                            id={`right_${index}_${option}`}
                             draggable
-                            onDrop={(event) => handleDrop(event,'right_'+index)}
+                            onDrop={(event) => handleDrop(event,`right_${index}_${option}`)}
                             onDragOver={(e) => e.preventDefault()}
                             className="flex items-center space-x-2 bg-gray-100 rounded-md my-2 cursor-move"
                         >
