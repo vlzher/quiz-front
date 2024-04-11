@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Modal} from "flowbite-react";
-import DeleteModal from "../../DeleteModal.jsx";
 import AddQuestionModalMenu from "./AddQuestionModalMenu.jsx";
 import AddQuestionModalBody from "./AddQuestionModalBody.jsx";
 import AddQuestionModalResult from "./AddQuestionModalResult.jsx";

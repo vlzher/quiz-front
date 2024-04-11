@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal } from "flowbite-react";
-import { createPoll } from "../api/api.js";
 
 const errorInputClassname =
   "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500";
@@ -11,38 +10,25 @@ const normalInputClassname =
 const normalLabelClassname =
   "block mb-2 text-sm font-medium text-gray-900 dark:text-white";
 
-const ModalPoll = ({ props, setPolls }) => {
-  const [pollName, setPollName] = useState("");
+const AddQuizModal = ({ openModal, setOpenModal, setQuizzes}) => {
+  const [quizTitle, setQuizTitle] = useState("");
   const [isInputError, setInputError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = () => {
-    if (pollName.length < 4) {
+    if (quizTitle.length < 4) {
       setInputError(true);
-      setErrorMessage("poll name length must have 4 symbols");
-      return;
+      setErrorMessage("quiz title length must have 4 symbols");
     }
-    createPoll(pollName).then(({ success, data, error }) => {
-      if (success) {
-        setPollName("");
-        setErrorMessage("");
-        setPolls((prev) => [...prev, data]);
-        setInputError(false);
-        props.setOpenModal(undefined);
-      } else {
-        setInputError(true);
-        setErrorMessage(error);
-      }
-    });
   };
 
   return (
     <>
       <Modal
-        show={props.openModal === "default"}
-        onClose={() => props.setOpenModal(undefined)}
+        show={openModal}
+        onClose={() => setOpenModal(undefined)}
       >
-        <Modal.Header>Adding new Poll</Modal.Header>
+        <Modal.Header><div className={"font-semibold text-xl text-white"}>Adding new Quiz</div></Modal.Header>
         <Modal.Body>
           <div>
             <div className="mb-5">
@@ -52,12 +38,12 @@ const ModalPoll = ({ props, setPolls }) => {
                   isInputError ? errorLabelClassname : normalLabelClassname
                 }
               >
-                Enter Poll name
+                Enter Quiz name
               </label>
               <input
                 type="text"
-                value={pollName}
-                onChange={(e) => setPollName(e.target.value)}
+                value={quizTitle}
+                onChange={(e) => setQuizTitle(e.target.value)}
                 className={
                   isInputError ? errorInputClassname : normalInputClassname
                 }
@@ -76,9 +62,9 @@ const ModalPoll = ({ props, setPolls }) => {
             <button
               type="button"
               onClick={onSubmit}
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className=" font-semibold dark:text-gray-900 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-gray-200"
             >
-              Add Poll
+              Add Quiz
             </button>
           </div>
         </Modal.Footer>
@@ -87,4 +73,4 @@ const ModalPoll = ({ props, setPolls }) => {
   );
 };
 
-export default ModalPoll;
+export default AddQuizModal;

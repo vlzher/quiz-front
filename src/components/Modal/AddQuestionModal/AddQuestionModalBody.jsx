@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {Modal} from "flowbite-react";
-import DeleteModal from "../../DeleteModal.jsx";
+import DeleteModal from "../DeleteModal.jsx";
 import QuestionOption from "./QuestionOption.jsx";
 import {ModalTypes} from "./AddQuestionModal.jsx";
 const errorInputClassname =
