@@ -20,7 +20,8 @@ const OrderQuestion = ({width, question, options }) => {
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col">
+                        <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col
+                        ">
                             {orderedOptions.map((option, index) => (
                                 <Draggable key={option} draggableId={option} index={index}>
                                     {(provided) => (
