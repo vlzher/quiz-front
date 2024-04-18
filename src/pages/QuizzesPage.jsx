@@ -2,18 +2,21 @@ import { useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import QuizLink from "../components/QuizLink.jsx";
+import {useAuth} from "react-oidc-context";
 
 const QuizzesPage = () => {
   const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
   const [openModal, setOpenModal] = useState();
-
+  const auth = useAuth()
+    console.log(auth.user.access_token)
+    console.log(auth.user)
   return (
     <div className="w-full flex items-center flex-col">
       <Navbar
         isQuizModal={true}
         rightButtonFunction={() => {
-          navigate("/login");
+            auth.signoutRedirect({ post_logout_redirect_uri: 'http://localhost:5173' })
         }}
         rightButtonTitle={"Logout"}
         leftButtonTitle={"Add The Quiz"}

@@ -7,6 +7,7 @@ import MultipleAnswerQuestion from "../components/Questions/MutipleAnswerQuestio
 import FileQuestion from "../components/Questions/FileQuestion.jsx";
 import MatchQuestion from "../components/Questions/MatchQuestion.jsx";
 import AddQuestionModal from "../components/Modal/AddQuestionModal/AddQuestionModal.jsx";
+import {useAuth} from "react-oidc-context";
 
 const QuizPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const QuizPage = () => {
   const [quizTitle, setQuizTitle] = useState("null");
   const [questions, setQuestions] = useState([]);
   const [openModal, setOpenModal] = useState();
+
 
   return (
     <div className="w-full flex items-center flex-col">
