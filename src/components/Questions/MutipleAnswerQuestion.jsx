@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
-const MultipleAnswerQuestion = ({width, question, options }) => {
+const MultipleAnswerQuestion = ({width, question, options, setState, isModal }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     const handleOptionChange = (index) => {
         const selectedIndex = selectedOptions.indexOf(index);
         if (selectedIndex === -1) {
-            // If option is not selected, add it to selectedOptions
+            if(isModal) setState([...selectedOptions, index]);
             setSelectedOptions([...selectedOptions, index]);
         } else {
-            // If option is already selected, remove it from selectedOptions
             const newSelectedOptions = [...selectedOptions];
             newSelectedOptions.splice(selectedIndex, 1);
             setSelectedOptions(newSelectedOptions);
+            if(isModal) setState(newSelectedOptions);
         }
     };
 

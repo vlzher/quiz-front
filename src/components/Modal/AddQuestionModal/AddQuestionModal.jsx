@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Modal} from "flowbite-react";
 import AddQuestionModalMenu from "./AddQuestionModalMenu.jsx";
 import AddQuestionModalBody from "./AddQuestionModalBody.jsx";
@@ -19,6 +19,17 @@ const AddQuestionModal = ({openModal, setOpenModal}) => {
     const [questionTitle, setQuestionTitle] = useState("");
     const [questionOptions, setQuestionOptions] = useState([]);
     const [questionOptionsRight, setQuestionOptionsRight] = useState([]);
+
+
+    useEffect(() => {
+        if(openModal === undefined){
+            setModalType(ModalTypes.Menu);
+            setQuestionTitle("");
+            setQuestionOptions([]);
+            setQuestionOptionsRight([]);
+        }
+
+    },[openModal])
     return (
         <>
 

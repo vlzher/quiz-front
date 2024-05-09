@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import {useEffect, useState} from "react";
 import Navbar from "../components/Navbar.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import OrderQuestion from "../components/Questions/OrderQuestion.jsx";
@@ -8,6 +8,7 @@ import FileQuestion from "../components/Questions/FileQuestion.jsx";
 import MatchQuestion from "../components/Questions/MatchQuestion.jsx";
 import AddQuestionModal from "../components/Modal/AddQuestionModal/AddQuestionModal.jsx";
 import {useAuth} from "react-oidc-context";
+import {getQuizByID} from "../api/api.js";
 
 const QuizPage = () => {
   const navigate = useNavigate();
@@ -15,19 +16,26 @@ const QuizPage = () => {
   const [quizTitle, setQuizTitle] = useState("null");
   const [questions, setQuestions] = useState([]);
   const [openModal, setOpenModal] = useState();
+  const auth = useAuth();
+
+  useEffect(() => {
+    getQuizByID(auth.user.access_token, id).then((data)=> {
+      console.log(data)
+    })
+  }, []);
 
 
   return (
     <div className="w-full flex items-center flex-col">
       <Navbar
-        isQuizModal={false}
+        isQuizModal={true}
         leftButtonTitle={"Add Question"}
         leftButtonFunction={() => {
           setOpenModal(true);
         }}
         rightButtonTitle={"Return"}
         rightButtonFunction={() => {
-          navigate("/polls");
+          navigate("/quizzies");
         }}
         setFunction={setQuestions}
       />
@@ -78,8 +86,7 @@ const QuizPage = () => {
           "Option C",
           "Option D",
         ]}/>
-        <AddQuestionModal openModal={true}/>
-
+        <AddQuestionModal openModal={openModal} setOpenModal={setOpenModal}/>
       </div>
     </div>
   );

@@ -1,16 +1,23 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Navbar from "../components/Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import QuizLink from "../components/QuizLink.jsx";
 import {useAuth} from "react-oidc-context";
+import {getQuizzes} from "../api/api.js";
 
 const QuizzesPage = () => {
-  const navigate = useNavigate();
   const [quizzes, setQuizzes] = useState([]);
   const [openModal, setOpenModal] = useState();
   const auth = useAuth()
     console.log(auth.user.access_token)
     console.log(auth.user)
+
+    useEffect(() => {
+       getQuizzes(auth.user.access_token).then((data) => {
+            setQuizzes(data)
+        })
+    },[])
+
   return (
     <div className="w-full flex items-center flex-col">
       <Navbar
@@ -30,7 +37,14 @@ const QuizzesPage = () => {
       <div className="p-5 w-full text-4xl flex justify-start">
         <div className={"text-4l text-white font-semibold"}>Current Quizzes:</div>
       </div>
-
+        {
+            quizzes && quizzes.map((quiz) => <QuizLink
+                    key={quiz.id}
+                    quizName={quiz.title}
+                    quizId={quiz.id}
+                />
+            )
+        }
         <QuizLink
             quizName={123}
             quizId={1}

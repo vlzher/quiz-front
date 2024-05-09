@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal} from "flowbite-react";
 import {ModalTypes} from "./AddQuestionModal.jsx";
 import OneAnswerQuestion from "../../Questions/OneAnswerQuestion.jsx";
@@ -6,6 +6,15 @@ import MultipleAnswerQuestion from "../../Questions/MutipleAnswerQuestion.jsx";
 import OrderQuestion from "../../Questions/OrderQuestion.jsx";
 import FileQuestion from "../../Questions/FileQuestion.jsx";
 import MatchQuestion from "../../Questions/MatchQuestion.jsx";
+import {
+    addFileQuestion,
+    addMatchQuestion,
+    addMultipleChooseQuestion,
+    addOneChooseQuestion,
+    addOrderQuestion
+} from "../../../api/api.js";
+import {useAuth} from "react-oidc-context";
+import {useParams} from "react-router-dom";
 
 const AddQuestionModalResult = ({
                                     modalType,
@@ -18,34 +27,59 @@ const AddQuestionModalResult = ({
                                     setQuestionOptionsRight,
     setQuestionTitle
                                 }) => {
+    const [correctAnswer, setCorrectAnswer] = useState(null);
+    const auth = useAuth();
+    const { id } = useParams();
+
+
     function renderQuestion(){
         switch (modalType){
             case ModalTypes.OneAnswerQuestion:
-                return (<OneAnswerQuestion width={"full"} question={questionTitle} options={questionOptions}/>)
+                return (<OneAnswerQuestion width={"full"} question={questionTitle} options={questionOptions} isModal={true} setState={setCorrectAnswer}/>)
             case ModalTypes.MultipleAnswerQuestion:
-                return (<MultipleAnswerQuestion width={"full"} question={questionTitle} options={questionOptions}/> )
+                return (<MultipleAnswerQuestion width={"full"} question={questionTitle} options={questionOptions} isModal={true} setState={setCorrectAnswer}/> )
             case ModalTypes.OrderQuestion:
-                return (<OrderQuestion width={"full"} question={questionTitle} options={questionOptions}/> )
+                return (<OrderQuestion width={"full"} question={questionTitle} options={questionOptions} isModal={true} setState={setCorrectAnswer}/> )
             case ModalTypes.MatchQuestion:
-                return (<MatchQuestion width={"full"} question={questionTitle} optionsLeft={questionOptions} optionsRight={questionOptionsRight} />)
+                return (<MatchQuestion width={"full"} question={questionTitle} optionsLeft={questionOptions} optionsRight={questionOptionsRight} isModal={true} setState={setCorrectAnswer}/>)
             default:
                 return null;
         }
     }
     
-    function onSubmit(){
+    async function onSubmit(){
+        const accessToken = auth.user.access_token;
+
+        switch (modalType){
+            case ModalTypes.OneAnswerQuestion:
+                await addOneChooseQuestion(accessToken, id, questionTitle, questionOptions, correctAnswer)
+                break;
+            case ModalTypes.MultipleAnswerQuestion:
+                await addMultipleChooseQuestion(accessToken, id, questionTitle, questionOptions, correctAnswer)
+                break;
+            case ModalTypes.OrderQuestion:
+                await addOrderQuestion(accessToken, id, questionTitle, questionOptions, correctAnswer)
+                break;
+            case ModalTypes.MatchQuestion:
+                await addMatchQuestion(accessToken, id, questionTitle, questionOptions, questionOptionsRight, correctAnswer)
+                break;
+        }
+
         setQuestionOptions([])
         setQuestionOptionsRight([])
         setQuestionTitle("")
         setModalType(ModalTypes.Menu)
         setIsResultModal(false)
+
     }
 
     useEffect(() => {
         if(modalType === ModalTypes.FileQuestion){
-            setQuestionTitle("")
-            setModalType(ModalTypes.Menu)
-            setIsResultModal(false)
+            addFileQuestion(auth.user.access_token, id, questionTitle).then(() => {
+                setQuestionTitle("")
+                setModalType(ModalTypes.Menu)
+                setIsResultModal(false)
+            })
         }
     }, [modalType, setIsResultModal, setModalType]);
 

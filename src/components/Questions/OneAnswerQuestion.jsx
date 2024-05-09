@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-const OneAnswerQuestion = ({ width, question, options }) => {
+const OneAnswerQuestion = ({ width, question, options, setState, isModal }) => {
     const [selectedOption, setSelectedOption] = useState(null);
 
     const handleOptionChange = (index) => {
         setSelectedOption(index);
+        if(isModal) setState(index);
     };
 
     return (

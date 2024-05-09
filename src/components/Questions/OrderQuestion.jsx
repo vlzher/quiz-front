@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-const OrderQuestion = ({width, question, options }) => {
+const OrderQuestion = ({width, question, options, setState, isModal }) => {
     const [orderedOptions, setOrderedOptions] = useState(options);
 
     const handleDragEnd = (result) => {
@@ -10,7 +10,7 @@ const OrderQuestion = ({width, question, options }) => {
         const newOptions = Array.from(orderedOptions);
         const [removed] = newOptions.splice(result.source.index, 1);
         newOptions.splice(result.destination.index, 0, removed);
-
+        if(isModal) setState(newOptions);
         setOrderedOptions(newOptions);
     };
 

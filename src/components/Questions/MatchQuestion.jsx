@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Xarrow from 'react-xarrows';
 
-const MatchQuestion = ({width, question, optionsLeft, optionsRight }) => {
+const MatchQuestion = ({width, question, optionsLeft, optionsRight, setState, isModal }) => {
     const [connections, setConnections] = useState([]);
 
     const handleDragStart = (event, leftID) => {
@@ -14,6 +14,7 @@ const MatchQuestion = ({width, question, optionsLeft, optionsRight }) => {
         let newConnections = [...connections];
         newConnections = newConnections.filter((el) => el.from !== leftID && el.to !== rightID);
         newConnections.push({ from: leftID, to: rightID })
+        if(isModal) setState(newConnections);
         setConnections(newConnections);
     };
     console.log(connections)

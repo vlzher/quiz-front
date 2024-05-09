@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Modal } from "flowbite-react";
+import {useAuth} from "react-oidc-context";
+import {createQuiz} from "../../api/api.js";
 
 const errorInputClassname =
   "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500";
@@ -14,12 +16,19 @@ const AddQuizModal = ({ openModal, setOpenModal, setQuizzes}) => {
   const [quizTitle, setQuizTitle] = useState("");
   const [isInputError, setInputError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const auth = useAuth();
+
 
   const onSubmit = () => {
     if (quizTitle.length < 4) {
       setInputError(true);
       setErrorMessage("quiz title length must have 4 symbols");
     }
+    createQuiz(auth.user.access_token,quizTitle).then(({id,quizTitle}) => {
+        setQuizzes(quizzes => [...quizzes, {id, title: quizTitle}])
+        setOpenModal(undefined);
+        setQuizTitle("");
+    })
   };
 
   return (
