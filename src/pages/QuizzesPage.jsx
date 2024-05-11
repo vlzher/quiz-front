@@ -3,14 +3,13 @@ import Navbar from "../components/Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import QuizLink from "../components/QuizLink.jsx";
 import {useAuth} from "react-oidc-context";
-import {getQuizzes} from "../api/api.js";
+import {getQuizzes, getStats} from "../api/api.js";
 
 const QuizzesPage = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [openModal, setOpenModal] = useState();
-  const auth = useAuth()
-    console.log(auth.user.access_token)
-    console.log(auth.user)
+  const auth = useAuth();
+
 
     useEffect(() => {
        getQuizzes(auth.user.access_token).then((data) => {
@@ -45,10 +44,6 @@ const QuizzesPage = () => {
                 />
             )
         }
-        <QuizLink
-            quizName={123}
-            quizId={1}
-        />
     </div>
   );
 };

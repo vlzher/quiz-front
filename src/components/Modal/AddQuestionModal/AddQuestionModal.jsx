@@ -44,7 +44,7 @@ const AddQuestionModal = ({openModal, setOpenModal}) => {
                 {modalType && isResultModal && <AddQuestionModalResult setQuestionTitle={setQuestionTitle} questionTitle={questionTitle} questionOptions={questionOptions} modalType={modalType} setModalType={setModalType}
                                                                        setQuestionOptions={setQuestionOptions}
                                                                        setQuestionOptionsRight={setQuestionOptionsRight}
-
+                                                                       setOpenModal={setOpenModal}
                                                                        questionOptionsRight={questionOptionsRight}
                                                                        setIsResultModal={setIsResultModal}/>}
             </Modal>

@@ -50,8 +50,8 @@ async function addOrderQuestion(accessToken, quizID, text, options, correctOrder
         optionsArray.push({text: option})
     ));
     const correctOrderIndexes = [];
-    correctOrder.forEach((option) => {
-        correctOrderIndexes.push(options.indexOf(option));
+    correctOrder.forEach(({text}) => {
+        correctOrderIndexes.push(optionsArray.findIndex(option => option.text === text));
     })
     const questionData = {
         text,
@@ -170,9 +170,9 @@ async function addFileQuestion(accessToken, quizID, text) {
     }
 }
 
-async function answerOrderQuestion(accessToken, questionID, answerData) {
+async function answerOrderQuestion(accessToken, questionID, answer) {
     try {
-        const response = await axios.post(`${BASE_URL}/api/quizzes/answerOrderQuestion/${questionID}`, answerData, {
+        const response = await axios.post(`${BASE_URL}/api/quizzes/answerOrderQuestion/${questionID}`, {answer}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -184,9 +184,9 @@ async function answerOrderQuestion(accessToken, questionID, answerData) {
     }
 }
 
-async function answerMultipleChooseQuestion(accessToken, questionID, answerData) {
+async function answerMultipleChooseQuestion(accessToken, questionID, answer) {
     try {
-        const response = await axios.post(`${BASE_URL}/api/quizzes/answerMultipleChooseQuestion/${questionID}`, answerData, {
+        const response = await axios.post(`${BASE_URL}/api/quizzes/answerMultipleChooseQuestion/${questionID}`, {answer}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -198,9 +198,9 @@ async function answerMultipleChooseQuestion(accessToken, questionID, answerData)
     }
 }
 
-async function answerMatchQuestion(accessToken, questionID, answerData) {
+async function answerMatchQuestion(accessToken, questionID, answer) {
     try {
-        const response = await axios.post(`${BASE_URL}/api/quizzes/answerMatchQuestion/${questionID}`, answerData, {
+        const response = await axios.post(`${BASE_URL}/api/quizzes/answerMatchQuestion/${questionID}`, {answer}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -212,18 +212,15 @@ async function answerMatchQuestion(accessToken, questionID, answerData) {
     }
 }
 
-async function answerFileQuestion(accessToken, questionID, answerData) {
+async function answerFileQuestion(accessToken, questionID, formData) {
     try {
-        const formData = new FormData();
-        formData.append('file', answerData.file);
-        formData.append('request', JSON.stringify(answerData.request));
-
         const response = await axios.post(`${BASE_URL}/api/quizzes/answerFileQuestion/${questionID}`, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'multipart/form-data'
             }
         });
+        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error('Error answering file question:', error);
@@ -231,9 +228,9 @@ async function answerFileQuestion(accessToken, questionID, answerData) {
     }
 }
 
-async function answerChooseQuestion(accessToken, questionID, answerData) {
+async function answerChooseQuestion(accessToken, questionID, answer) {
     try {
-        const response = await axios.post(`${BASE_URL}/api/quizzes/answerChooseQuestion/${questionID}`, answerData, {
+        const response = await axios.post(`${BASE_URL}/api/quizzes/answerChooseQuestion/${questionID}`, {answer}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }

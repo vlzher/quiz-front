@@ -25,7 +25,8 @@ const AddQuestionModalResult = ({
                                     setIsResultModal,
                                     questionOptionsRight,
                                     setQuestionOptionsRight,
-    setQuestionTitle
+    setQuestionTitle,
+    setOpenModal
                                 }) => {
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const auth = useAuth();
@@ -33,15 +34,17 @@ const AddQuestionModalResult = ({
 
 
     function renderQuestion(){
+        const optionsData = questionOptions.map((option) => ({text: option}))
+        const optionsDataRight = questionOptionsRight.map((option) => ({text: option}))
         switch (modalType){
             case ModalTypes.OneAnswerQuestion:
-                return (<OneAnswerQuestion width={"full"} question={questionTitle} options={questionOptions} isModal={true} setState={setCorrectAnswer}/>)
+                return (<OneAnswerQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true} setState={setCorrectAnswer}/>)
             case ModalTypes.MultipleAnswerQuestion:
-                return (<MultipleAnswerQuestion width={"full"} question={questionTitle} options={questionOptions} isModal={true} setState={setCorrectAnswer}/> )
+                return (<MultipleAnswerQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true} setState={setCorrectAnswer}/> )
             case ModalTypes.OrderQuestion:
-                return (<OrderQuestion width={"full"} question={questionTitle} options={questionOptions} isModal={true} setState={setCorrectAnswer}/> )
+                return (<OrderQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true} setState={setCorrectAnswer}/> )
             case ModalTypes.MatchQuestion:
-                return (<MatchQuestion width={"full"} question={questionTitle} optionsLeft={questionOptions} optionsRight={questionOptionsRight} isModal={true} setState={setCorrectAnswer}/>)
+                return (<MatchQuestion width={"full"} question={questionTitle} optionsLeft={optionsData} optionsRight={optionsDataRight} isModal={true} setState={setCorrectAnswer}/>)
             default:
                 return null;
         }
@@ -70,6 +73,7 @@ const AddQuestionModalResult = ({
         setQuestionTitle("")
         setModalType(ModalTypes.Menu)
         setIsResultModal(false)
+        setOpenModal(undefined)
 
     }
 
