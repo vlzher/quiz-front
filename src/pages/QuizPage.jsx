@@ -22,10 +22,7 @@ const QuizPage = () => {
   const auth = useAuth();
   const [isAuthor, setIsAuthor] = useState(false);
   const [graphData, setGraphData] = useState([]);
-  const [answerCount, setAnswerCount] = useState(Object.keys(answers).length);
-
-
-
+  const [answerCount, setAnswerCount] = useState(0);
   useEffect(() => {
     updateQuestions();
   }, []);
@@ -34,6 +31,7 @@ const QuizPage = () => {
   },[questions]);
 
   useEffect(() => {
+
     updateGraphData();
   }, [answerCount]);
   async function updateQuestions(){
@@ -73,12 +71,17 @@ const QuizPage = () => {
   }
 
   useEffect(() => {
+    if(!answerCount || !graphData.length ){
+      return;
+    }
     if(answerCount === graphData.length){
         updateGraphData();
+        updateAnswers();
     }
-  }, [answerCount, graphData]);
 
-  function renderQuestions(questions){
+  }, [answerCount]);
+
+  function renderQuestions(){
     return questions.map((question) => {
 
       switch (question.type){
@@ -113,7 +116,7 @@ const QuizPage = () => {
   return (
     <div className="w-full flex items-center flex-col">
       <Navbar
-        isQuizModal={true}
+        isQuizModal={false}
         leftButtonTitle={"Add Question"}
         leftButtonFunction={() => {
           setOpenModal(true);
@@ -122,6 +125,7 @@ const QuizPage = () => {
         rightButtonFunction={() => {
           navigate("/quizzies");
         }}
+        isAuthor={isAuthor}
         setFunction={setQuestions}
       />
       <div className="p-5 w-full text-4xl flex justify-between">
@@ -138,7 +142,7 @@ const QuizPage = () => {
       </div>
       <div className="flex flex-col items-center w-full">
 
-        {questions && renderQuestions(questions)}
+        {questions && renderQuestions()}
         <AddQuestionModal openModal={openModal} setOpenModal={setOpenModal}/>
         {graphData.length !== 0 && answerCount === graphData.length && <BarGraph data={graphData} questions={questions.map((question) => question.text)}/>}
       </div>

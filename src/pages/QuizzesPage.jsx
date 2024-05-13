@@ -30,6 +30,7 @@ const QuizzesPage = () => {
           setOpenModal(true);
         }}
         openModal={openModal}
+        isAuthor={true}
         setOpenModal={setOpenModal}
         setFunction={setQuizzes}
       />
@@ -44,7 +45,9 @@ const QuizzesPage = () => {
                 />
             )
         }
+        <div className={"hidden w-2/3"}></div>
     </div>
+
   );
 };
 

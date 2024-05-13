@@ -21,7 +21,7 @@ const OneAnswerQuestion = ({ width, questionID, question, options, setState, isM
             const correctedIndex = options.findIndex((option) => option.id === answer.chooseAnswer);
             setSelectedOption(correctedIndex);
         }
-    }, []);
+    }, [answer]);
 
     function onSubmit(){
         const accessToken = auth.user.access_token;
