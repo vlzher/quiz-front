@@ -1,12 +1,13 @@
-import { useAuth } from "react-oidc-context"
-import { Spin, Typography } from 'antd'
-const { Title } = Typography
+import {useAuth} from "react-oidc-context"
+import {Spin, Typography} from 'antd'
 
-function PrivateRoute({ children }) {
+const {Title} = Typography
+
+function PrivateRoute({children}) {
     const auth = useAuth()
 
-    const textAlignStyle = { textAlign: "center" }
-    const subTitleStyle = { color: 'grey' }
+    const textAlignStyle = {textAlign: "center"}
+    const subTitleStyle = {color: 'grey'}
 
     if (auth.isLoading) {
         return (

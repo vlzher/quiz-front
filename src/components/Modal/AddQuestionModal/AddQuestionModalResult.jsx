@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Modal} from "flowbite-react";
 import {ModalTypes} from "./AddQuestionModal.jsx";
 import OneAnswerQuestion from "../../Questions/OneAnswerQuestion.jsx";
 import MultipleAnswerQuestion from "../../Questions/MutipleAnswerQuestion.jsx";
 import OrderQuestion from "../../Questions/OrderQuestion.jsx";
-import FileQuestion from "../../Questions/FileQuestion.jsx";
 import MatchQuestion from "../../Questions/MatchQuestion.jsx";
 import {
     addFileQuestion,
@@ -25,35 +24,40 @@ const AddQuestionModalResult = ({
                                     setIsResultModal,
                                     questionOptionsRight,
                                     setQuestionOptionsRight,
-    setQuestionTitle,
-    setOpenModal
+                                    setQuestionTitle,
+                                    setOpenModal
                                 }) => {
     const [correctAnswer, setCorrectAnswer] = useState(null);
     const auth = useAuth();
-    const { id } = useParams();
+    const {id} = useParams();
 
 
-    function renderQuestion(){
+    function renderQuestion() {
         const optionsData = questionOptions.map((option) => ({text: option}))
         const optionsDataRight = questionOptionsRight.map((option) => ({text: option}))
-        switch (modalType){
+        switch (modalType) {
             case ModalTypes.OneAnswerQuestion:
-                return (<OneAnswerQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true} setState={setCorrectAnswer}/>)
+                return (<OneAnswerQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true}
+                                           setState={setCorrectAnswer}/>)
             case ModalTypes.MultipleAnswerQuestion:
-                return (<MultipleAnswerQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true} setState={setCorrectAnswer}/> )
+                return (
+                    <MultipleAnswerQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true}
+                                            setState={setCorrectAnswer}/>)
             case ModalTypes.OrderQuestion:
-                return (<OrderQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true} setState={setCorrectAnswer}/> )
+                return (<OrderQuestion width={"full"} question={questionTitle} options={optionsData} isModal={true}
+                                       setState={setCorrectAnswer}/>)
             case ModalTypes.MatchQuestion:
-                return (<MatchQuestion width={"full"} question={questionTitle} optionsLeft={optionsData} optionsRight={optionsDataRight} isModal={true} setState={setCorrectAnswer}/>)
+                return (<MatchQuestion width={"full"} question={questionTitle} optionsLeft={optionsData}
+                                       optionsRight={optionsDataRight} isModal={true} setState={setCorrectAnswer}/>)
             default:
                 return null;
         }
     }
-    
-    async function onSubmit(){
+
+    async function onSubmit() {
         const accessToken = auth.user.access_token;
 
-        switch (modalType){
+        switch (modalType) {
             case ModalTypes.OneAnswerQuestion:
                 await addOneChooseQuestion(accessToken, id, questionTitle, questionOptions, correctAnswer)
                 break;
@@ -78,7 +82,7 @@ const AddQuestionModalResult = ({
     }
 
     useEffect(() => {
-        if(modalType === ModalTypes.FileQuestion){
+        if (modalType === ModalTypes.FileQuestion) {
             addFileQuestion(auth.user.access_token, id, questionTitle).then(() => {
                 setQuestionTitle("")
                 setModalType(ModalTypes.Menu)
@@ -86,7 +90,6 @@ const AddQuestionModalResult = ({
             })
         }
     }, [modalType, setIsResultModal, setModalType]);
-
 
 
     return (

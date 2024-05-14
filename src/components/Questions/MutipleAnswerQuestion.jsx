@@ -1,43 +1,54 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useAuth} from "react-oidc-context";
 import {answerMultipleChooseQuestion} from "../../api/api.js";
 import {Button} from "flowbite-react";
 
-const MultipleAnswerQuestion = ({width, questionID, question, options, setState, isModal, answer, isAuthor, deleteFunction, increaseAnswerCount }) => {
+const MultipleAnswerQuestion = ({
+                                    width,
+                                    questionID,
+                                    question,
+                                    options,
+                                    setState,
+                                    isModal,
+                                    answer,
+                                    isAuthor,
+                                    deleteFunction,
+                                    increaseAnswerCount
+                                }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const auth = useAuth();
     const [isCorrect, setIsCorrect] = useState(undefined);
 
 
     const handleOptionChange = (index) => {
-        if(isCorrect !== undefined) return;
+        if (isCorrect !== undefined) return;
         const selectedIndex = selectedOptions.indexOf(index);
         if (selectedIndex === -1) {
-            if(isModal) setState([...selectedOptions, index]);
+            if (isModal) setState([...selectedOptions, index]);
             setSelectedOptions([...selectedOptions, index]);
         } else {
             const newSelectedOptions = [...selectedOptions];
             newSelectedOptions.splice(selectedIndex, 1);
             setSelectedOptions(newSelectedOptions);
-            if(isModal) setState(newSelectedOptions);
+            if (isModal) setState(newSelectedOptions);
         }
     };
 
     useEffect(() => {
-        if(answer){
+        if (answer) {
             setSelectedOptions(answer.chooseAnswers);
             setIsCorrect(answer.isCorrect);
             const indexes = answer.chooseAnswers.map((answer) =>
-                 options.findIndex((option) => option.id === answer)
+                options.findIndex((option) => option.id === answer)
             )
             setSelectedOptions(indexes);
         }
-    }, []);
+    }, [answer]);
 
-    function onSubmit(){
+    function onSubmit() {
         const accessToken = auth.user.access_token;
         const answer = selectedOptions.map((option) => options[option].id);
-        answerMultipleChooseQuestion(accessToken, questionID,answer).then((data)=>{
+        answerMultipleChooseQuestion(accessToken, questionID, answer).then((data) => {
             setIsCorrect(data)
         })
         increaseAnswerCount();

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useEffect, useState} from 'react';
 import {Modal} from "flowbite-react";
 import DeleteModal from "../DeleteModal.jsx";
 import QuestionOption from "./QuestionOption.jsx";
 import {ModalTypes} from "./AddQuestionModal.jsx";
+
 const errorInputClassname =
     "bg-red-50 border text-base border-red-500 text-red-900 placeholder-red-700 text-medium rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500";
 const errorLabelClassname =
@@ -12,24 +12,31 @@ const normalInputClassname =
     "bg-gray-50 border dark:border-white border-gray-300 text-gray-900 text-medium rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
 const normalLabelClassname =
     "block mb-2 text-base font-medium text-gray-900 dark:text-white";
-const AddQuestionModalBody = ({questionOptions, setQuestionOptions, questionOptionsRight, setQuestionOptionsRight, questionTitle, setQuestionTitle, modalType, setModalType, setIsResultModal}) => {
+const AddQuestionModalBody = ({
+                                  questionOptions,
+                                  setQuestionOptions,
+                                  questionOptionsRight,
+                                  setQuestionOptionsRight,
+                                  questionTitle,
+                                  setQuestionTitle,
+                                  modalType,
+                                  setIsResultModal
+                              }) => {
+
     const [isInputError, setInputError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
     const [questionOption, setQuestionOption] = useState("");
-
     const [openModalDelete, setOpenModalDelete] = useState();
-
     const [valueToDelete, setValueToDelete] = useState("");
     const [toDelete, setToDelete] = useState("");
 
 
-    const { id } = useParams();
 
     useEffect(() => {
         setQuestionOptions((prev) => prev.filter((val) => val !== valueToDelete));
         setQuestionOptionsRight((prev) => prev.filter((val) => val !== valueToDelete));
     }, [toDelete]);
+
     const addQuestionOption = () => {
         if (questionOption && !questionOptions.includes(questionOption))
             setQuestionOptions((prev) => [...prev, questionOption]);
@@ -45,12 +52,12 @@ const AddQuestionModalBody = ({questionOptions, setQuestionOptions, questionOpti
         setOpenModalDelete("pop-up");
     };
     const onSubmit = () => {
-        if (modalType!== ModalTypes.FileQuestion && questionOptions.length < 2) {
+        if (modalType !== ModalTypes.FileQuestion && questionOptions.length < 2) {
             setInputError(true);
             setErrorMessage("Question must contains 2+ options");
             return;
         }
-        if (modalType === ModalTypes.MatchQuestion && questionOptions.length !== questionOptionsRight.length){
+        if (modalType === ModalTypes.MatchQuestion && questionOptions.length !== questionOptionsRight.length) {
             setInputError(true);
             setErrorMessage("Left options length must the same as right");
             return;
@@ -94,12 +101,12 @@ const AddQuestionModalBody = ({questionOptions, setQuestionOptions, questionOpti
                     </div>
                     {modalType !== ModalTypes.FileQuestion &&
                         <>
-                    <label
-                        htmlFor="last_name"
-                        className="block mb-2 text-base font-medium text-gray-900 dark:text-white"
-                    >
-                        Add Question Option
-                    </label>
+                            <label
+                                htmlFor="last_name"
+                                className="block mb-2 text-base font-medium text-gray-900 dark:text-white"
+                            >
+                                Add Question Option
+                            </label>
 
                             <div className="flex flex-row justify-between mb-5">
                                 <input
@@ -124,7 +131,7 @@ const AddQuestionModalBody = ({questionOptions, setQuestionOptions, questionOpti
                                 </button>}
                             </div>
                             <div className={"w-full flex"}>
-                                <div className={modalType !== ModalTypes.MatchQuestion ? "w-full ":"w-1/2 m-1"}>
+                                <div className={modalType !== ModalTypes.MatchQuestion ? "w-full " : "w-1/2 m-1"}>
                                     {questionOptions.map((pollField) => (
                                         <QuestionOption
                                             key={pollField}
@@ -133,16 +140,16 @@ const AddQuestionModalBody = ({questionOptions, setQuestionOptions, questionOpti
                                         />
                                     ))}
                                 </div>
-                                { modalType === ModalTypes.MatchQuestion &&
-                                <div className={"w-1/2 m-1"}>
-                                    {questionOptionsRight.map((pollField) => (
-                                        <QuestionOption
-                                            key={pollField}
-                                            pollName={pollField}
-                                            onRemove={() => onRemove(pollField)}
-                                        />
-                                    ))}
-                                </div>}
+                                {modalType === ModalTypes.MatchQuestion &&
+                                    <div className={"w-1/2 m-1"}>
+                                        {questionOptionsRight.map((pollField) => (
+                                            <QuestionOption
+                                                key={pollField}
+                                                pollName={pollField}
+                                                onRemove={() => onRemove(pollField)}
+                                            />
+                                        ))}
+                                    </div>}
 
                             </div>
                         </>

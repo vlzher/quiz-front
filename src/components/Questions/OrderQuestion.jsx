@@ -1,26 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {useEffect, useState} from 'react';
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {useAuth} from "react-oidc-context";
 import {answerOrderQuestion} from "../../api/api.js";
 import {Button} from "flowbite-react";
 
-const OrderQuestion = ({width, questionID, question, options, setState, isModal, answer, isAuthor, deleteFunction, increaseAnswerCount }) => {
+const OrderQuestion = ({
+                           width,
+                           questionID,
+                           question,
+                           options,
+                           setState,
+                           isModal,
+                           answer,
+                           isAuthor,
+                           deleteFunction,
+                           increaseAnswerCount
+                       }) => {
+
     const [orderedOptions, setOrderedOptions] = useState(options);
     const auth = useAuth();
     const [isCorrect, setIsCorrect] = useState(undefined);
 
     const handleDragEnd = (result) => {
-        if(isCorrect !== undefined) return;
+        if (isCorrect !== undefined) return;
         if (!result.destination) return;
         const newOptions = Array.from(orderedOptions);
         const [removed] = newOptions.splice(result.source.index, 1);
         newOptions.splice(result.destination.index, 0, removed);
-        if(isModal) setState(newOptions);
+        if (isModal) setState(newOptions);
         setOrderedOptions(newOptions);
     };
 
     useEffect(() => {
-        if(answer) {
+        if (answer) {
             setIsCorrect(answer.isCorrect);
 
             const orderOptionsData = answer.orderAnswers.map((option) =>
@@ -28,17 +40,16 @@ const OrderQuestion = ({width, questionID, question, options, setState, isModal,
             setOrderedOptions(orderOptionsData);
         }
 
-    }, []);
+    }, [answer]);
 
-    function onSubmit(){
+    function onSubmit() {
         const accessToken = auth.user.access_token;
         const answer = orderedOptions.map(({id}) => id);
-        answerOrderQuestion(accessToken, questionID,answer).then((data)=>{
+        answerOrderQuestion(accessToken, questionID, answer).then((data) => {
             setIsCorrect(data)
         })
         increaseAnswerCount();
     }
-
 
 
     return (

@@ -7,7 +7,6 @@ const BarGraph = ({ data, questions }) => {
     useEffect(() => {
         const svg = d3.select(svgRef.current);
 
-        // Clear previous graph
         svg.selectAll('*').remove();
 
         const width = 600;
@@ -61,24 +60,25 @@ const BarGraph = ({ data, questions }) => {
                     .transition()
                     .duration(200)
                     .attr('opacity', 0.7);
-                svg.append('text')
-                    .attr('id', 'tooltip')
-                    .attr('x', margin.left + xScale(data.indexOf(d)) + xScale.bandwidth() / 2)
-                    .attr('y', margin.top + yScale(d) - 10)
-                    .attr('text-anchor', 'middle')
-                    .attr('font-size', '14px')
-                    .text((d*100).toFixed(2)+'%')
-                    .attr('fill', '#ffffff');
             })
             .on('mouseout', function () {
                 d3.select(this)
                     .transition()
                     .duration(200)
                     .attr('opacity', 1);
-                svg.select('#tooltip').remove();
             });
 
-        // Legend
+        svg.selectAll('.label')
+            .data(data)
+            .enter().append('text')
+            .attr('class', 'label')
+            .attr('x', (_, i) => margin.left + xScale(i) + xScale.bandwidth() / 2)
+            .attr('y', d => margin.top + yScale(d) - 10)
+            .attr('text-anchor', 'middle')
+            .attr('font-size', '12px')
+            .text(d => (d * 100).toFixed(2) + '%')
+            .attr('fill', '#ffffff');
+
         const legend = svg.append('g')
             .attr('transform', `translate(${innerWidth + margin.left}, ${margin.top})`);
 
@@ -100,7 +100,7 @@ const BarGraph = ({ data, questions }) => {
         legends.append('text')
             .attr('x', legendRectSize + legendSpacing)
             .attr('y', legendRectSize - legendSpacing)
-            .text((d, i) => `${questions[i]}`)
+            .text((d, i) => `${questions[i].slice(0, 14) + "..."}`)
             .attr('font-size', '14px')
             .attr('fill', '#ece5e5');
 
@@ -111,7 +111,6 @@ const BarGraph = ({ data, questions }) => {
             <div className={"text-xl text-white mb-2"}>Correct Answer Percentage</div>
             <svg ref={svgRef} width={700} height={400}></svg>
         </div>
-
     );
 };
 

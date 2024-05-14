@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import {Modal} from "flowbite-react";
 import {ModalTypes} from "./AddQuestionModal.jsx";
 import MenuButton from "./MenuButton.jsx";
 
 
-const AddQuestionModalMenu = ({modalType, setModalType}) => {
+const AddQuestionModalMenu = ({setModalType}) => {
     const buttonsTitles = useMemo(() =>
         [{title: "One Choose Question", onClick: () => setModalType(ModalTypes.OneAnswerQuestion)},
             {title: "Multiple Choose Question", onClick: () => setModalType(ModalTypes.MultipleAnswerQuestion)},

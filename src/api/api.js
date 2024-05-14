@@ -18,7 +18,7 @@ async function getQuizzes(accessToken) {
 
 async function createQuiz(accessToken, quizTitle) {
     try {
-        const response = await axios.post(`${BASE_URL}/api/quizzes`, { quizTitle }, {
+        const response = await axios.post(`${BASE_URL}/api/quizzes`, {quizTitle}, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -56,7 +56,7 @@ async function addOrderQuestion(accessToken, quizID, text, options, correctOrder
     const questionData = {
         text,
         options: optionsArray,
-        correctOrder:correctOrderIndexes
+        correctOrder: correctOrderIndexes
     };
     try {
         const response = await axios.post(`${BASE_URL}/api/quizzes/${quizID}/addOrderQuestion`, questionData, {
@@ -129,10 +129,10 @@ async function addMatchQuestion(accessToken, quizID, text, leftOptions, rightOpt
     ));
     const correctAnswerData = [];
     correctAnswer.forEach((answer) => {
-        let {from,to} = answer;
+        let {from, to} = answer;
         from = from.split("_")[1];
         to = to.split("_")[1];
-        correctAnswerData.push([from,to])
+        correctAnswerData.push([from, to])
     });
     const questionData = {
         text,

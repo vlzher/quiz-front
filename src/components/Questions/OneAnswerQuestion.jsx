@@ -3,19 +3,31 @@ import {answerChooseQuestion} from "../../api/api.js";
 import {useAuth} from "react-oidc-context";
 import {Button} from "flowbite-react";
 
-const OneAnswerQuestion = ({ width, questionID, question, options, setState, isModal, answer, isAuthor, deleteFunction, increaseAnswerCount }) => {
+const OneAnswerQuestion = ({
+                               width,
+                               questionID,
+                               question,
+                               options,
+                               setState,
+                               isModal,
+                               answer,
+                               isAuthor,
+                               deleteFunction,
+                               increaseAnswerCount
+                           }) => {
+
     const [selectedOption, setSelectedOption] = useState(null);
     const auth = useAuth();
     const [isCorrect, setIsCorrect] = useState(undefined);
 
     const handleOptionChange = (index) => {
-        if(isCorrect !== undefined) return;
+        if (isCorrect !== undefined) return;
         setSelectedOption(index);
-        if(isModal) setState(index);
+        if (isModal) setState(index);
     };
 
     useEffect(() => {
-        if(answer){
+        if (answer) {
             setSelectedOption(answer.chooseAnswer);
             setIsCorrect(answer.isCorrect);
             const correctedIndex = options.findIndex((option) => option.id === answer.chooseAnswer);
@@ -23,10 +35,10 @@ const OneAnswerQuestion = ({ width, questionID, question, options, setState, isM
         }
     }, [answer]);
 
-    function onSubmit(){
+    function onSubmit() {
         const accessToken = auth.user.access_token;
         const answer = options[selectedOption].id;
-        answerChooseQuestion(accessToken, questionID,answer).then((data)=>{
+        answerChooseQuestion(accessToken, questionID, answer).then((data) => {
             setIsCorrect(data)
         })
         increaseAnswerCount();
